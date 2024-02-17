@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Quiz Application</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <div class="timer">Timer: <span id="timer">10</span> seconds</div>
+            <div class="score">Score: <span id="score">0</span></div>
+        </div>
+        <div class="question-container">
+            <h2 id="question">Question goes here?</h2>
+            <div class="options" id="options">
+                <!-- Options will be dynamically inserted here -->
+            </div>
+        </div>
+        <button id="submit" onclick="submitAnswer()">Submit</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
