@@ -1,100 +1,148 @@
-const quizContainer = document.querySelector(".quiz-container");
-const timerValue = document.getElementById("timer");
-const scoreValue = document.getElementById("score");
-const questionElement = document.getElementById("question");
-const optionsContainer = document.getElementById("options");
-const submitButton = document.getElementById("submit");
-
 let currentQuestion = 0;
 let score = 0;
 let timer;
+const totalQuestions = 10; // Total number of questions
+const timePerQuestion = 10; // Time per question in seconds
 
-const quizData = [
+const questions = [
+    {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        answer: "4"
+    },
     {
         question: "What is the capital of France?",
-        options: ["Paris", "Berlin", "London", "Madrid"],
-        correctAnswer: 0,
+        options: ["Paris", "London", "Berlin", "Rome"],
+        answer: "Paris"
     },
     {
-        question: "Who is the CEO of Tesla?",
-        options: ["Elon Musk", "Bill Gates", "Jeff Bezos", "Tim Cook"],
-        correctAnswer: 0,
+        question: "What is the chemical symbol for water?",
+        options: ["W", "H2", "O", "CO2"],
+        answer: "O"
     },
-    // Add more questions as needed
+    {
+        question: "Who wrote 'To Kill a Mockingbird'?",
+        options: ["J.K. Rowling", "Harper Lee", "Stephen King", "J.R.R. Tolkien"],
+        answer: "Harper Lee"
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        answer: "Mars"
+    },
+    {
+        question: "What is the tallest mammal in the world?",
+        options: ["Elephant", "Giraffe", "Horse", "Kangaroo"],
+        answer: "Giraffe"
+    },
+    {
+        question: "Which country is famous for the Great Wall?",
+        options: ["China", "India", "Italy", "Egypt"],
+        answer: "China"
+    },
+    {
+        question: "What is the largest ocean on Earth?",
+        options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+        answer: "Pacific Ocean"
+    },
+    {
+        question: "Who painted the Mona Lisa?",
+        options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+        answer: "Leonardo da Vinci"
+    },
+    {
+        question: "What is the main ingredient in guacamole?",
+        options: ["Avocado", "Tomato", "Onion", "Chili"],
+        answer: "Avocado"
+    }
+    // Add more questions
 ];
 
-function startQuiz() {
-    displayQuestion();
-    startTimer();
-}
-
 function displayQuestion() {
-    const currentQuizData = quizData[currentQuestion];
-    questionElement.textContent = currentQuizData.question;
-
-    optionsContainer.innerHTML = "";
-    currentQuizData.options.forEach((option, index) => {
-        const optionButton = document.createElement("button");
-        optionButton.textContent = option;
-        optionButton.setAttribute("data-index", index);
-        optionButton.addEventListener("click", selectOption);
-        optionsContainer.appendChild(optionButton);
+    const questionObj = questions[currentQuestion];
+    document.getElementById('questionNumber').textContent = currentQuestion + 1;
+    document.getElementById('questionText').textContent = questionObj.question;
+    const optionsList = document.getElementById('optionsList');
+    optionsList.innerHTML = '';
+    questionObj.options.forEach(option => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.onclick = function() {
+            checkAnswer(option);
+        };
+        li.appendChild(button);
+        optionsList.appendChild(li);
     });
 }
 
-function selectOption(event) {
-    const selectedOptionIndex = parseInt(event.target.dataset.index);
-    const currentQuizData = quizData[currentQuestion];
-
-    if (selectedOptionIndex === currentQuizData.correctAnswer) {
+function checkAnswer(selectedOption) {
+    const questionObj = questions[currentQuestion];
+    const options = document.querySelectorAll('.options button');
+    options.forEach(option => {
+        if (option.textContent === selectedOption) {
+            option.style.backgroundColor = '#ff69b4'; // Change color to pink
+        }
+        option.disabled = true;
+    });
+    if (selectedOption === questionObj.answer) {
         score++;
-        scoreValue.textContent = score;
     }
-
-    disableOptions();
+    document.getElementById('score').textContent = score;
 }
 
 function disableOptions() {
-    const optionButtons = document.querySelectorAll(".options button");
-    optionButtons.forEach((button) => {
-        button.disabled = true;
+    const options = document.querySelectorAll('.options button');
+    options.forEach(option => {
+        option.disabled = true;
     });
 }
 
 function startTimer() {
-    let timeLeft = 10;
+    let timeLeft = timePerQuestion;
+    updateTimerDisplay(timeLeft);
     timer = setInterval(() => {
-        timerValue.textContent = timeLeft;
         timeLeft--;
-
+        updateTimerDisplay(timeLeft);
         if (timeLeft < 0) {
             clearInterval(timer);
-            moveToNextQuestion();
+            handleTimeOut();
         }
     }, 1000);
 }
 
-function submitAnswer() {
-    clearInterval(timer);
-    moveToNextQuestion();
+function updateTimerDisplay(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    document.getElementById('timer').textContent = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
 
-function moveToNextQuestion() {
-    if (currentQuestion < quizData.length - 1) {
-        currentQuestion++;
-        startQuiz();
+function handleTimeOut() {
+    disableOptions();
+    nextQuestion();
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < totalQuestions) {
+        displayQuestion();
+        resetTimer();
     } else {
         endQuiz();
     }
 }
 
-function endQuiz() {
-    quizContainer.innerHTML = `
-        <h2>Quiz Completed</h2>
-        <p>Your final score is: ${score} out of ${quizData.length}</p>
-    `;
-    submitButton.disabled = true;
+function resetTimer() {
+    clearInterval(timer);
+    startTimer();
 }
 
-// Start the quiz when the page loads
-startQuiz();
+function endQuiz() {
+    clearInterval(timer);
+    alert(`Quiz ended. Your score is ${score}/${totalQuestions}`);
+}
+
+// Start quiz
+displayQuestion();
+startTimer();
+
