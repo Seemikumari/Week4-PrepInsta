@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Quiz Application</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <div class="timer">Timer: <span id="timer">10</span> seconds</div>
+    <div class="container">
+        <div class="header">
+            <h1>Quiz Application</h1>
+            <div class="timer">Timer: <span id="timer">60</span> seconds</div>
             <div class="score">Score: <span id="score">0</span></div>
         </div>
-        <div class="question-container">
-            <h2 id="question">Question goes here?</h2>
-            <div class="options" id="options">
-                <!-- Options will be dynamically inserted here -->
-            </div>
+        <div class="question-section">
+            <div class="question-number">Question <span id="questionNumber">1</span></div>
+            <div class="question-text" id="questionText">What is 2 + 2?</div>
+            <ul class="options" id="optionsList">
+                <li><button onclick="checkAnswer(this)">3</button></li>
+                <li><button onclick="checkAnswer(this)">4</button></li>
+                <li><button onclick="checkAnswer(this)">5</button></li>
+                <li><button onclick="checkAnswer(this)">6</button></li>
+            </ul>
         </div>
-        <button id="submit" onclick="submitAnswer()">Submit</button>
+        <button onclick="nextQuestion()" id="submitBtn">Next</button>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
+
