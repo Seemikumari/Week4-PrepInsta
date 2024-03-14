@@ -1,48 +1,103 @@
-// Your JavaScript code here (the Employee object and functions)
+function Employee(name, age, department, salary) {
+    this.name = name;
+    this.age = age;
+    this.department = department;
+    this.salary = salary;
+}
 
-// Example Usage:
-const employees = [
-    new Employee("John Doe", 30, "IT", 60000),
-    new Employee("Jane Smith", 28, "HR", 50000),
-    new Employee("Bob Johnson", 35, "Finance", 70000),
+// Sample employee data
+let employees = [
+    new Employee("John Doe", 30, "HR", 50000),
+    new Employee("Alice Smith", 35, "IT", 60000),
+    new Employee("Bob Johnson", 40, "Finance", 70000),
+    new Employee("Emily Brown", 28, "HR", 55000),
     // Add more employees as needed
 ];
 
-// Display employee information in the HTML document
-function displayEmployeeInformation() {
+// Display past employees by default
+displayEmployees();
+
+// Create Employee
+function createEmployee() {
+    const name = prompt("Enter employee name:");
+    const age = parseInt(prompt("Enter employee age:"));
+    const department = prompt("Enter employee department:");
+    const salary = parseInt(prompt("Enter employee salary:"));
+    if (name && !isNaN(age) && department && !isNaN(salary)) {
+        const newEmployee = new Employee(name, age, department, salary);
+        employees.push(newEmployee);
+        displayOutput(`Employee ${name} created successfully.`);
+        displayEmployees();
+    } else {
+        displayOutput("Invalid input. Please fill in all fields with valid data.");
+    }
+}
+
+// Calculate Average Salary
+function calculateAverageSalary() {
+    const totalSalary = employees.reduce((acc, employee) => acc + employee.salary, 0);
+    const averageSalary = totalSalary / employees.length;
+    displayOutput(`Average Salary: $${averageSalary.toFixed(2)}`);
+}
+
+// Find Employees in a Department
+function findEmployeesByDepartment() {
+    const department = prompt("Enter department name:");
+    const employeesInDepartment = employees.filter(employee => employee.department.toLowerCase() === department.toLowerCase());
+    if (employeesInDepartment.length > 0) {
+        displayOutput(`Employees in ${department}: ${employeesInDepartment.map(employee => employee.name).join(', ')}`);
+    } else {
+        displayOutput(`No employees found in ${department} department.`);
+    }
+}
+
+// Increase Salary for Employees
+function increaseSalary() {
+    const percentage = parseFloat(prompt("Enter percentage increase:"));
+    if (!isNaN(percentage)) {
+        employees.forEach(employee => {
+            employee.salary += (employee.salary * (percentage / 100));
+        });
+        displayOutput(`Salaries increased by ${percentage.toFixed(2)}%`);
+    } else {
+        displayOutput("Invalid percentage.");
+    }
+}
+
+// Sort Employees by Age
+function sortEmployeesByAge() {
+    const sortedEmployees = employees.slice().sort((a, b) => a.age - b.age);
+    displayOutput("Employees sorted by age:");
+    sortedEmployees.forEach(employee => {
+        displayOutput(`- ${employee.name} (Age: ${employee.age})`);
+    });
+}
+
+// Display employees in tabular format
+function displayEmployees() {
     const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = '<h2>Employee Information</h2>';
-
-    if (employees.length === 0) {
-        outputDiv.innerHTML += '<p>No employees found.</p>';
-        return;
-    }
-
+    outputDiv.innerHTML = ""; // Clear existing content
     const table = document.createElement('table');
-    const headerRow = table.createTHead().insertRow(0);
-
-    for (const key in employees[0]) {
-        if (Object.hasOwnProperty.call(employees[0], key)) {
-            const th = document.createElement('th');
-            th.textContent = key.toUpperCase();
-            headerRow.appendChild(th);
-        }
+    const headerRow = table.insertRow();
+    for (const property in employees[0]) {
+        const headerCell = headerRow.insertCell();
+        headerCell.textContent = property.toUpperCase();
     }
-
-    const tbody = table.createTBody();
-
     employees.forEach(employee => {
-        const row = tbody.insertRow();
-        for (const key in employee) {
-            if (Object.hasOwnProperty.call(employee, key)) {
-                const cell = row.insertCell();
-                cell.textContent = employee[key];
-            }
+        const row = table.insertRow();
+        for (const property in employee) {
+            const cell = row.insertCell();
+            cell.textContent = employee[property];
         }
     });
-
     outputDiv.appendChild(table);
 }
 
-// Call the display function
-displayEmployeeInformation();
+// Display output on the webpage
+function displayOutput(message) {
+    const outputDiv = document.getElementById('output');
+    const paragraph = document.createElement('p');
+    paragraph.textContent = message;
+    outputDiv.appendChild(paragraph);
+}
+
