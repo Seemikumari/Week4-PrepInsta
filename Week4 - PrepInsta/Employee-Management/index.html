@@ -4,85 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Management System</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Employee Management System</h2>
-    <table id="employeeTable">
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Department</th>
-            <th>Salary</th>
-        </tr>
-    </table>
-    <script>
-        class Employee {
-            constructor(name, age, department, salary) {
-                this.name = name;
-                this.age = age;
-                this.department = department;
-                this.salary = salary;
-            }
-        }
-
-        const employees = [
-            new Employee('John', 25, 'Engineering', 70000),
-            new Employee('Jane', 30, 'Marketing', 80000),
-            new Employee('Bob', 28, 'Engineering', 75000),
-            new Employee('Alice', 32, 'Marketing', 85000),
-            new Employee('Eve', 29, 'Engineering', 77000),
-        ];
-
-        function displayEmployees(employees) {
-            const table = document.getElementById('employeeTable');
-            employees.forEach(employee => {
-                const row = table.insertRow();
-                Object.values(employee).forEach(value => {
-                    const cell = row.insertCell();
-                    cell.textContent = value;
-                });
-            });
-        }
-
-        function calculateAverageSalary(employees) {
-            const totalSalary = employees.reduce((sum, employee) => sum + employee.salary, 0);
-            return totalSalary / employees.length;
-        }
-
-        function findEmployeesInDepartment(employees, department) {
-            return employees.filter(employee => employee.department === department);
-        }
-
-        function increaseSalary(employees, percentageIncrease) {
-            employees.forEach(employee => {
-                employee.salary += employee.salary * (percentageIncrease / 100);
-            });
-            return employees;
-        }
-
-        function sortEmployeesByAge(employees) {
-            return employees.sort((a, b) => a.age - b.age);
-        }
-
-        displayEmployees(employees);
-        console.log('Average Salary:', calculateAverageSalary(employees));
-        console.log('Engineering Employees:', findEmployeesInDepartment(employees, 'Engineering'));
-        console.log('Increased Salaries:', increaseSalary(employees, 10));
-        console.log('Sorted Employees by Age:', sortEmployeesByAge(employees));
-    </script>
+    <div class="container">
+        <h1>Employee Management System</h1>
+        <div class="action-buttons">
+            <button onclick="createEmployee()">Create Employee</button>
+            <button onclick="calculateAverageSalary()">Calculate Average Salary</button>
+            <button onclick="findEmployeesByDepartment()">Find Employees by Department</button>
+            <button onclick="increaseSalary()">Increase Salary</button>
+            <button onclick="sortEmployeesByAge()">Sort Employees by Age</button>
+        </div>
+        <div id="output" class="employee-table"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
