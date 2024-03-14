@@ -9,29 +9,21 @@
 <body>
     <div class="container">
         <h1>Library Management System</h1>
-        <form id="bookForm">
-            <label for="title">Title:</label><br>
-            <input type="text" id="title" name="title" required><br>
-            <label for="author">Author:</label><br>
-            <input type="text" id="author" name="author" required><br>
-            <label for="pages">Pages:</label><br>
-            <input type="number" id="pages" name="pages" min="1" required><br>
-            <label for="genre">Genre:</label><br>
-            <select id="genre" name="genre" required>
-                <option value="">Select a genre</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Non-Fiction">Non-Fiction</option>
-                <option value="Sci-Fi">Sci-Fi</option>
-            </select><br>
+        <div class="form-container">
+            <input type="text" id="searchInput" placeholder="Search by Title">
+            <button onclick="searchBooks()">Search</button>
+        </div>
+        <div id="bookList"></div>
+        <div id="noResultsMessage" style="display: none;">No books found</div>
+        <h2>Add New Book</h2>
+        <form id="addBookForm">
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="number" id="pages" placeholder="Pages" required>
+            <input type="text" id="genre" placeholder="Genre" required>
             <button type="submit">Add Book</button>
         </form>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search by title..."><br>
-            <button id="searchBtn">Search</button>
-        </div>
-        <div id="bookDisplay"></div>
-        <p id="noResults" class="hidden">No books found.</p>
     </div>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
